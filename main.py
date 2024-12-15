@@ -68,3 +68,24 @@ print(f"Mean Absolute Error en el conjunto de prueba: {mae:.4f}")
 #----------------------------------------------------------------------------------finalizacion de la compilacion e entrenamiento-----------------------------------------------------------------------------------------------#
 
 
+#----------------------------------colocamos al modelo a predecir-------------------------------------------------------------------------------------------------------------------#
+# Predecir el tiempo entre dos estaciones
+origen = 'A'
+destino = 'E'
+
+# Convertir estaciones a valores numeros codificados que el modelo pueda entender
+origen_encoded = le.transform([origen])[0]
+destino_encoded = le.transform([destino])[0]
+
+
+input_data = np.array([[origen_encoded, destino_encoded]])
+
+# Predecir tiempo
+predicted_time = model.predict(input_data)  # Forma [[origen, destino]]
+
+# Desnormalizar el tiempo predicho para obtener el valor real en minutos
+predicted_time_real = scaler.inverse_transform(predicted_time.reshape(-1, 1))[0][0]
+
+print(f"Tiempo estimado de viaje entre {origen} y {destino}: {predicted_time_real:.2f} minutos")
+
+#----------------------------------finalizacion de la prediccion-------------------------------------------------------------------------------------------------------------------#
